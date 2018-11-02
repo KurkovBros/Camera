@@ -5,13 +5,14 @@ package Camera;
 import javafx.scene.control.Button;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -45,7 +46,6 @@ public class CameraPlayer extends Application {
         root.setPadding(new Insets(10));
         root.setHgap(10);
         root.setVgap(10);
-        
         root.add(view1.getGroup(), 0, 0);
         root.add(view2.getGroup(), 1, 0);
         root.add(button1, 0, 1);
@@ -64,39 +64,43 @@ public class CameraPlayer extends Application {
         button2.setMinSize(640, 20);
         button3.setMinSize(640, 20);
         button4.setMinSize(640, 20);
-
-        Button button = new Button();
-        button.setText("Open a New Window");
-
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                Stage gialog = new Stage();
-                gialog.setTitle("Input camera IP");
-                Label label = new Label("Camera IP");
-                TextField cameraIP = new TextField();
-                Pane pane = new Pane();
-                pane.setPadding(new Insets(10));
-                label.setLayoutX(10);
-                label.setLayoutY(10);
-                cameraIP.setLayoutX(50);
-                cameraIP.setLayoutY(10);
-                pane.getChildren().addAll(label, cameraIP);
-                Scene secondScene = new Scene(pane, 230, 100, Color.BLACK);
-                gialog.setScene(secondScene);
-                gialog.initModality(Modality.WINDOW_MODAL);
-                gialog.initOwner(stage);
-                
-
-                // Set position of second window, related to primary window.
-                gialog.setX(stage.getX() + 200);
-                gialog.setY(stage.getY() + 100);
-
-                gialog.show();
-            }
+        
+        // Описываем обработку нажатия на кнопку выбора камеры
+        button1.setOnAction((ActionEvent event) -> {
+            Stage gialog = new Stage();
+            gialog.setTitle("Input camera IP");
+            Label label = new Label("Camera IP");
+            label.setLayoutX(10);
+            label.setLayoutY(24);
+            TextField cameraIP = new TextField();
+            cameraIP.setLayoutX(70);
+            cameraIP.setLayoutY(20);
+            cameraIP.setMinWidth(210);
+            Button okButton = new Button("Ok");
+            okButton.setLayoutX(70);
+            okButton.setLayoutY(60);
+            okButton.setMinSize(100, 20);
+            Button canselButton = new Button("Cansel");
+            canselButton.setLayoutX(180);
+            canselButton.setLayoutY(60);
+            canselButton.setMinSize(100, 20);
+            Pane pane = new Pane();
+            pane.setPadding(new Insets(10));
+            pane.getChildren().addAll(label, cameraIP, okButton, canselButton);
+            Scene dialogScene = new Scene(pane, 290, 100, Color.BLACK);
+            gialog.setScene(dialogScene);
+            gialog.initModality(Modality.WINDOW_MODAL);
+            gialog.initOwner(stage);
+            gialog.setX(stage.getX() + 500);
+            gialog.setY(stage.getY() + 355);
+            dialogScene.setOnKeyPressed((KeyEvent ke) -> {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    gialog.close();
+                }
+            });
+            gialog.show();
         });
-
+        
         Scene scene = new Scene(root, 1300, 810, Color.BLACK); // Создаем сцену и добавляем в нее контейнер
         stage.setScene(scene); // Устанавливаем сцену в окно программы
         stage.show(); // Отображаем окно программы
