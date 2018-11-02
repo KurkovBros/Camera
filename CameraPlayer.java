@@ -19,10 +19,10 @@ public class CameraPlayer extends Application{
         stage.setTitle("Camera Player"); // Устанавливаем заголовок окна
         
         // Создаем четыре объекта класса Viewer для отображения видеопотоков с четырех камер
-        Viewer view1 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Movies/Baby.mp4");
-        Viewer view2 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Movies/Crying.mp4");
-        Viewer view3 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Movies/Slim.mp4");
-        Viewer view4 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Movies/Alergia.mp4");
+        Viewer view1 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Baby.mp4");
+        Viewer view2 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Crying.mp4");
+        Viewer view3 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Slim.mp4");
+        Viewer view4 = new Viewer("file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Alergia.mp4");
         
         FlowPane root = new FlowPane(view1.getGroup(), view2.getGroup(), view3.getGroup(), view4.getGroup()); // Создаем контейнер и добавляем в него четыре видеопотока
         Scene scene = new Scene(root, 1280, 720, Color.BLACK); // Создаем сцену и добавляем в нее контейнер
