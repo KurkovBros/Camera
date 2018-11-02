@@ -20,6 +20,7 @@ public class Viewer {
         view.setFitHeight(360);
         group.getChildren().add(view);
         player.setCycleCount(MediaPlayer.INDEFINITE);
+        player.setVolume(0);
         player.play();
     }
     
