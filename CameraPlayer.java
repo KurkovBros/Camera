@@ -45,10 +45,15 @@ public class CameraPlayer extends Application{
         root.add(view4.getGroup(), 1, 2);
         root.add(button3, 0, 3);
         root.add(button4, 1, 3);
+        
         GridPane.setHalignment(button1, HPos.CENTER);
         GridPane.setHalignment(button2, HPos.CENTER);
         GridPane.setHalignment(button3, HPos.CENTER);
         GridPane.setHalignment(button4, HPos.CENTER);
+        button1.setMinSize(640, 20);
+        button2.setMinSize(640, 20);
+        button3.setMinSize(640, 20);
+        button4.setMinSize(640, 20);
 
         Scene scene = new Scene(root, 1310, 820, Color.BLACK); // Создаем сцену и добавляем в нее контейнер
         stage.setScene(scene); // Устанавливаем сцену в окно программы
