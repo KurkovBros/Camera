@@ -1,6 +1,6 @@
 // Оконный интерфейс видеоплеера
 
-package project_003;
+package Camera;
 
 import java.awt.Image;
 
