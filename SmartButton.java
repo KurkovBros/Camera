@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -35,11 +33,13 @@ public class SmartButton {
     private final Stage stage;
     private final Button button;
     private final int number;
+    private String inputText;
 
     SmartButton(Stage stage, int number) {
         this.stage = stage;
         this.button = new Button("Camera #" + number);
         this.number = number;
+        this.inputText = "";
         createSmartButton();
     }
     
@@ -60,6 +60,7 @@ public class SmartButton {
             cameraIP.setLayoutX(70);
             cameraIP.setLayoutY(20);
             cameraIP.setMinWidth(210);
+            inputText = cameraIP.getText();
             
             // Создание и размещение кнопок
             Button okButton = new Button("Ok");
@@ -67,24 +68,8 @@ public class SmartButton {
             okButton.setLayoutY(60);
             okButton.setMinSize(100, 20);
             okButton.setOnAction((ActionEvent event1) -> {
-                try {
-                    String config = CameraPlayer.getConfig();
-                    JSONParser parser = new JSONParser();
-                    JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
-                    JSONObject jObject = new JSONObject();
-                    jObject.put("Camera #" + number, cameraIP.getText());
-                    jArray.set(number - 1, jObject);
-                    File oldFile = new File(config);
-                    oldFile.delete();
-                    try (FileWriter newFile = new FileWriter(config)) {
-                        newFile.write(jArray.toJSONString().replace("\\/", "/"));
-                        newFile.flush();
-                    }
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException | ParseException ex) {
-                    Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                configModify();
+                secondaryWindow.close();
             });
             Button canselButton = new Button("Cansel");
             canselButton.setLayoutX(180);
@@ -99,8 +84,8 @@ public class SmartButton {
             pane.setPadding(new Insets(10));
             pane.getChildren().addAll(label, cameraIP, okButton, canselButton);
             
-            Scene dialogScene = new Scene(pane, 290, 100, Color.BLACK); // Создание сцену и добавляем в нее контейнер
-            secondaryWindow.setScene(dialogScene); // Устанавливаем сцену в окно программы
+            Scene secondaryScene = new Scene(pane, 290, 100, Color.BLACK); // Создание сцену и добавляем в нее контейнер
+            secondaryWindow.setScene(secondaryScene); // Устанавливаем сцену в окно программы
             secondaryWindow.initModality(Modality.WINDOW_MODAL); // Запрет операций с главным окном при открытии диалогового окна
             secondaryWindow.initOwner(stage); // Определение родительского окна
             
@@ -108,32 +93,15 @@ public class SmartButton {
             secondaryWindow.setX(stage.getX() + 500);
             secondaryWindow.setY(stage.getY() + 355);
             
-            // Закрытие диалогового окна при нажатии клавиш Esc
-            dialogScene.setOnKeyPressed((KeyEvent ke) -> {
+            // Закрытие диалогового окна при нажатии клавиши Esc
+            secondaryScene.setOnKeyPressed((KeyEvent ke) -> {
                 if (ke.getCode() == KeyCode.ESCAPE) {
                     secondaryWindow.close();
                 }
             });
-            dialogScene.setOnKeyPressed((KeyEvent ke) -> {
+            secondaryScene.setOnKeyPressed((KeyEvent ke) -> {
                 if (ke.getCode() == KeyCode.ENTER) {
-                    try {
-                        String config = CameraPlayer.getConfig();
-                        JSONParser parser = new JSONParser();
-                        JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
-                        JSONObject jObject = new JSONObject();
-                        jObject.put("Camera #" + number, cameraIP.getText());
-                        jArray.set(number - 1, jObject);
-                        File oldFile = new File(config);
-                        oldFile.delete();
-                        try (FileWriter newFile = new FileWriter(config)) {
-                            newFile.write(jArray.toJSONString().replace("\\/", "/"));
-                            newFile.flush();
-                        }
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException | ParseException ex) {
-                        Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    configModify();
                     secondaryWindow.close();
                 }
             });
@@ -141,11 +109,44 @@ public class SmartButton {
         });
     }
     
+    private void configModify() {
+        File file = new File(inputText);
+        if (file.exists()) {
+            try {
+                String config = CameraPlayer.getConfig();
+                JSONParser parser = new JSONParser();
+                JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
+                JSONObject jObject = new JSONObject();
+                jObject.put("Camera #" + number, inputText);
+                jArray.set(number - 1, jObject);
+                File oldFile = new File(config);
+                oldFile.delete();
+                try (FileWriter newFile = new FileWriter(config)) {
+                    newFile.write(jArray.toJSONString().replace("\\/", "/"));
+                    newFile.flush();
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException | ParseException ex) {
+                Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
     public Button getButton() {
         return button;
     }
     
-    private void configModify() {
-        
+    public Stage getStage() {
+        return stage;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getInputText() {
+        return inputText;
     }
 }
