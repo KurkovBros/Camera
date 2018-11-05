@@ -2,7 +2,6 @@
 
 package Camera;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -21,15 +20,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class CameraPlayer extends Application {
+    
+    public static String config = "C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/config.json";
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(final Stage stage) {
+    public void start(final Stage primaryWindow) {
         
-        String config = "C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/config.json";
         String camera1 = null;
         String camera2 = null;
         String camera3 = null;
@@ -74,18 +74,15 @@ public class CameraPlayer extends Application {
                     file.write(array.toJSONString().replace("\\/", "/"));
                     file.flush();
                 }
-            } catch (IOException e2) {
-                e2.printStackTrace(System.out);
+            } catch (IOException ex) {
+                ex.printStackTrace(System.out);
             }
         } catch (ParseException | IOException ex) {
             Logger.getLogger(CameraPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         
-        
-        
-        stage.setTitle("Camera Player"); // Установка заголовока окна
-        stage.setResizable(false); // Запрет изменения размера окна
+        primaryWindow.setTitle("Camera Player"); // Установка заголовока окна
+        primaryWindow.setResizable(false); // Запрет изменения размера окна
 
         // Создание четырех объектов класса Viewer для отображения видеопотоков с четырех камер
         Viewer view1 = new Viewer(camera1);
@@ -94,10 +91,10 @@ public class CameraPlayer extends Application {
         Viewer view4 = new Viewer(camera4);
 
         // Создание четырех умных кнопок
-        SmartButton button1 = new SmartButton(stage, 1);
-        SmartButton button2 = new SmartButton(stage, 2);
-        SmartButton button3 = new SmartButton(stage, 3);
-        SmartButton button4 = new SmartButton(stage, 4);
+        SmartButton button1 = new SmartButton(primaryWindow, 1);
+        SmartButton button2 = new SmartButton(primaryWindow, 2);
+        SmartButton button3 = new SmartButton(primaryWindow, 3);
+        SmartButton button4 = new SmartButton(primaryWindow, 4);
         
         // Создание и заполнение контейнера элементами
         GridPane root = new GridPane();
@@ -114,7 +111,11 @@ public class CameraPlayer extends Application {
         root.add(button4.getButton(), 1, 3);
         
         Scene scene = new Scene(root, 1300, 810, Color.BLACK); // Создание сцены и добавление в нее контейнера
-        stage.setScene(scene); // Установка сцены в окно программы
-        stage.show(); // Отображение окна программы
+        primaryWindow.setScene(scene); // Установка сцены в окно программы
+        primaryWindow.show(); // Отображение окна программы
+    }
+    
+    public static String getConfig() {
+        return config;
     }
 }
