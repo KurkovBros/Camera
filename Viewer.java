@@ -1,3 +1,5 @@
+// Класс для отображения видеопотока
+
 package Camera;
 
 import javafx.scene.Group;

@@ -1,3 +1,5 @@
+// Класс для создания и обработки нажатия на кнопку выбора камеры
+
 package Camera;
 
 import javafx.event.ActionEvent;
@@ -22,27 +24,30 @@ public class SmartButton {
     private final Button button;
 
     SmartButton(Stage stage, int number) {
-        
         this.number = number;
         this.stage = stage;
         this.button = new Button("Camera #" + number);
+        createSmartButton();
+    }
+    
+    private void createSmartButton() {
         GridPane.setHalignment(button, HPos.CENTER); // Размещение кнопки по центру ячейки
         button.setMinSize(640, 20); // Установка минимального размера кнопки
         button.setOnAction((ActionEvent event) -> {
             Stage gialog = new Stage(); // Создание диалогового окна
             gialog.setTitle("Input camera IP"); // Установка заголовка диалогового окна
-            
+
             // Создание размещение надписи в диалоговом окне
             Label label = new Label("Camera IP");
             label.setLayoutX(10); // Указание 
             label.setLayoutY(24);
-            
+
             // Создание и размещение поля для ввода IP адреса камеры
             TextField cameraIP = new TextField();
             cameraIP.setLayoutX(70);
             cameraIP.setLayoutY(20);
             cameraIP.setMinWidth(210);
-            
+
             // Создание и размещение кнопок
             Button okButton = new Button("Ok");
             okButton.setLayoutX(70);
@@ -55,21 +60,21 @@ public class SmartButton {
             canselButton.setOnAction((ActionEvent event1) -> {
                 gialog.close();
             });
-            
+
             // Создание и заполнение контейнера
             Pane pane = new Pane();
             pane.setPadding(new Insets(10));
             pane.getChildren().addAll(label, cameraIP, okButton, canselButton);
-            
+
             Scene dialogScene = new Scene(pane, 290, 100, Color.BLACK); // Создание сцену и добавляем в нее контейнер
             gialog.setScene(dialogScene); // Устанавливаем сцену в окно программы
             gialog.initModality(Modality.WINDOW_MODAL); // Запрет операций с главным окном при открытии диалогового окна
             gialog.initOwner(stage); // Определение родительского окна
-            
+
             // Размещение диалогового окна
             gialog.setX(stage.getX() + 500);
             gialog.setY(stage.getY() + 355);
-            
+
             // Закрытие диалогового окна при нажатии клавиши Esc
             dialogScene.setOnKeyPressed((KeyEvent ke) -> {
                 if (ke.getCode() == KeyCode.ESCAPE) {
@@ -77,7 +82,7 @@ public class SmartButton {
                 }
             });
             gialog.show();
-            
+
         });
     }
     
