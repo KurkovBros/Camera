@@ -2,11 +2,9 @@
 
 package Camera;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import static Camera.CameraPlayer.config;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -23,28 +21,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class SmartButton {
     
     private final Stage stage;
     private final Button button;
-    private final int number;
-    private String inputText;
-    private static boolean isConfigModified;
+    private static int number;
+    private static String inputText;
 
     SmartButton(Stage stage, int number) {
         this.stage = stage;
         this.button = new Button("Camera #" + number);
-        this.number = number;
-        this.inputText = "";
-        createSmartButton();
+        SmartButton.number = number;
+        createSmartButton(number);
     }
     
-    private void createSmartButton() {
+    private void createSmartButton(int number) {
         GridPane.setHalignment(button, HPos.CENTER); // Размещение кнопки по центру ячейки
         button.setMinSize(640, 20); // Установка минимального размера кнопки
         button.setOnAction((ActionEvent event) -> {
@@ -68,9 +61,17 @@ public class SmartButton {
             okButton.setLayoutY(60);
             okButton.setMinSize(100, 20);
             okButton.setOnAction((ActionEvent event1) -> {
-                inputText = cameraIP.getText();
-                configModify();
-                secondaryWindow.close();
+                try {
+                    inputText = cameraIP.getText();
+                    Configuration.modifyConfig(inputText, number);
+                    secondaryWindow.close();
+                    GUI gui = CameraPlayer.getGui();
+                    gui.getPrimaryWindow().close();
+                    Map<String, String> map = Configuration.readConfig(config);
+                    gui = new GUI(map.get("Camera #1"), map.get("Camera #2"), map.get("Camera #3"), map.get("Camera #4"));
+                } catch (IOException | ParseException ex) {
+                    Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
+                }
             });
             
             // Создание и размещение кнопки Cansel
@@ -101,37 +102,17 @@ public class SmartButton {
                 if (ke.getCode() == KeyCode.ESCAPE) {
                     secondaryWindow.close();
                 } else if (ke.getCode() == KeyCode.ENTER) {
-                    configModify();
+                    inputText = cameraIP.getText();
+                    Configuration.modifyConfig(inputText, number);
                     secondaryWindow.close();
+                    GUI gui = CameraPlayer.getGui();
+                    gui.getPrimaryWindow().close();
+                    Map<String, String> map = CameraPlayer.getMap();
+                    gui = new GUI(map.get("Camera #1"), map.get("Camera #2"), map.get("Camera #3"), map.get("Camera #4"));
                 }
             });
             secondaryWindow.show();
         });
-    }
-    
-    private void configModify() {
-        File file = new File(inputText);
-        if (file.exists()) {
-            try {
-                String config = CameraPlayer.getConfig();
-                JSONParser parser = new JSONParser();
-                JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
-                JSONObject jObject = new JSONObject();
-                jObject.put("Camera #" + number, "file:///" + inputText);
-                jArray.set(number - 1, jObject);
-                File oldFile = new File(config);
-                oldFile.delete();
-                try (FileWriter newFile = new FileWriter(config)) {
-                    newFile.write(jArray.toJSONString().replace("\\/", "/"));
-                    newFile.flush();
-                }
-                isConfigModified = true;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException | ParseException ex) {
-                Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
     
     public Button getButton() {
@@ -142,19 +123,11 @@ public class SmartButton {
         return stage;
     }
 
-    public int getNumber() {
+    public static int getNumber() {
         return number;
     }
 
-    public String getInputText() {
+    public static String getInputText() {
         return inputText;
-    }
-
-    public static boolean isIsConfigModified() {
-        return isConfigModified;
-    }
-
-    public static void setIsConfigModified(boolean isConfigModified) {
-        SmartButton.isConfigModified = isConfigModified;
     }
 }
