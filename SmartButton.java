@@ -62,7 +62,7 @@ public class SmartButton {
             cameraIP.setMinWidth(210);
             inputText = cameraIP.getText();
             
-            // Создание и размещение кнопок
+            // Создание и размещение кнопки ОК
             Button okButton = new Button("Ok");
             okButton.setLayoutX(70);
             okButton.setLayoutY(60);
@@ -71,6 +71,8 @@ public class SmartButton {
                 configModify();
                 secondaryWindow.close();
             });
+            
+            // Создание и размещение кнопки Cansel
             Button canselButton = new Button("Cansel");
             canselButton.setLayoutX(180);
             canselButton.setLayoutY(60);
