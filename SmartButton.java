@@ -97,10 +97,7 @@ public class SmartButton {
             secondaryScene.setOnKeyPressed((KeyEvent ke) -> {
                 if (ke.getCode() == KeyCode.ESCAPE) {
                     secondaryWindow.close();
-                }
-            });
-            secondaryScene.setOnKeyPressed((KeyEvent ke) -> {
-                if (ke.getCode() == KeyCode.ENTER) {
+                } else if (ke.getCode() == KeyCode.ENTER) {
                     configModify();
                     secondaryWindow.close();
                 }
@@ -131,7 +128,6 @@ public class SmartButton {
                 Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
     }
     
     public Button getButton() {

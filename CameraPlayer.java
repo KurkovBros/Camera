@@ -2,7 +2,7 @@
 
 package Camera;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,16 +28,17 @@ public class CameraPlayer extends Application {
     }
 
     @Override
-    public void start(final Stage primaryWindow) {
+    public void start(final Stage primaryWindow) throws IOException, ParseException {
         
-        String camera1 = null;
-        String camera2 = null;
-        String camera3 = null;
-        String camera4 = null;
+        String camera1;
+        String camera2;
+        String camera3;
+        String camera4;
         
         // Чтение JSON файла настроек
         JSONParser parser = new JSONParser();
-        try {
+        File f = new File(config);
+        if (f.exists()) {
             JSONArray array = (JSONArray) parser.parse(new FileReader(config));
             JSONObject jCamera1 = (JSONObject) array.get(0);
             JSONObject jCamera2 = (JSONObject) array.get(1);
@@ -47,8 +48,7 @@ public class CameraPlayer extends Application {
             camera2 = (String) jCamera2.get("Camera #2");
             camera3 = (String) jCamera3.get("Camera #3");
             camera4 = (String) jCamera4.get("Camera #4");
-        }
-        catch (FileNotFoundException e) {
+        } else {
             // Создание массива объектов JSON с директориями видеозаписей / адресами IP видеокамер
             camera1 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Baby.mp4";
             camera2 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Crying.mp4";
@@ -75,10 +75,8 @@ public class CameraPlayer extends Application {
                     file.flush();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace(System.out);
+                Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ParseException | IOException ex) {
-            Logger.getLogger(CameraPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         primaryWindow.setTitle("Camera Player"); // Установка заголовока окна
