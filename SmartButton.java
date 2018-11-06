@@ -157,5 +157,4 @@ public class SmartButton {
     public static void setIsConfigModified(boolean isConfigModified) {
         SmartButton.isConfigModified = isConfigModified;
     }
-    
 }
