@@ -34,6 +34,7 @@ public class SmartButton {
     private final Button button;
     private final int number;
     private String inputText;
+    private static boolean isConfigModified;
 
     SmartButton(Stage stage, int number) {
         this.stage = stage;
@@ -60,7 +61,6 @@ public class SmartButton {
             cameraIP.setLayoutX(70);
             cameraIP.setLayoutY(20);
             cameraIP.setMinWidth(210);
-            inputText = cameraIP.getText();
             
             // Создание и размещение кнопки ОК
             Button okButton = new Button("Ok");
@@ -68,6 +68,7 @@ public class SmartButton {
             okButton.setLayoutY(60);
             okButton.setMinSize(100, 20);
             okButton.setOnAction((ActionEvent event1) -> {
+                inputText = cameraIP.getText();
                 configModify();
                 secondaryWindow.close();
             });
@@ -116,7 +117,7 @@ public class SmartButton {
                 JSONParser parser = new JSONParser();
                 JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
                 JSONObject jObject = new JSONObject();
-                jObject.put("Camera #" + number, inputText);
+                jObject.put("Camera #" + number, "file:///" + inputText);
                 jArray.set(number - 1, jObject);
                 File oldFile = new File(config);
                 oldFile.delete();
@@ -124,6 +125,7 @@ public class SmartButton {
                     newFile.write(jArray.toJSONString().replace("\\/", "/"));
                     newFile.flush();
                 }
+                isConfigModified = true;
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException | ParseException ex) {
@@ -147,4 +149,13 @@ public class SmartButton {
     public String getInputText() {
         return inputText;
     }
+
+    public static boolean isIsConfigModified() {
+        return isConfigModified;
+    }
+
+    public static void setIsConfigModified(boolean isConfigModified) {
+        SmartButton.isConfigModified = isConfigModified;
+    }
+    
 }

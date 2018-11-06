@@ -93,7 +93,7 @@ public class CameraPlayer extends Application {
         SmartButton button2 = new SmartButton(primaryWindow, 2);
         SmartButton button3 = new SmartButton(primaryWindow, 3);
         SmartButton button4 = new SmartButton(primaryWindow, 4);
-        
+
         // Создание и заполнение контейнера элементами
         GridPane root = new GridPane();
         root.setPadding(new Insets(10));
@@ -107,10 +107,14 @@ public class CameraPlayer extends Application {
         root.add(view4.getGroup(), 1, 2);
         root.add(button3.getButton(), 0, 3);
         root.add(button4.getButton(), 1, 3);
-        
+
         Scene scene = new Scene(root, 1300, 810, Color.BLACK); // Создание сцены и добавление в нее контейнера
         primaryWindow.setScene(scene); // Установка сцены в окно программы
         primaryWindow.show(); // Отображение окна программы
+        
+        if (SmartButton.isIsConfigModified()) {
+            start(primaryWindow);
+        }
     }
     
     public static String getConfig() {
