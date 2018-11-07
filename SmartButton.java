@@ -2,9 +2,7 @@
 
 package Camera;
 
-import static Camera.CameraPlayer.config;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -33,7 +31,6 @@ public class SmartButton {
     SmartButton(Stage stage, int number) {
         this.stage = stage;
         this.button = new Button("Camera #" + number);
-        SmartButton.number = number;
         createSmartButton(number);
     }
     
@@ -64,11 +61,8 @@ public class SmartButton {
                 try {
                     inputText = cameraIP.getText();
                     Configuration.modifyConfig(inputText, number);
+                    CameraPlayer.getGui().modifyRoot(number);
                     secondaryWindow.close();
-                    GUI gui = CameraPlayer.getGui();
-                    gui.getPrimaryWindow().close();
-                    Map<String, String> map = Configuration.readConfig(config);
-                    gui = new GUI(map.get("Camera #1"), map.get("Camera #2"), map.get("Camera #3"), map.get("Camera #4"));
                 } catch (IOException | ParseException ex) {
                     Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -102,32 +96,21 @@ public class SmartButton {
                 if (ke.getCode() == KeyCode.ESCAPE) {
                     secondaryWindow.close();
                 } else if (ke.getCode() == KeyCode.ENTER) {
-                    inputText = cameraIP.getText();
-                    Configuration.modifyConfig(inputText, number);
-                    secondaryWindow.close();
-                    GUI gui = CameraPlayer.getGui();
-                    gui.getPrimaryWindow().close();
-                    Map<String, String> map = CameraPlayer.getMap();
-                    gui = new GUI(map.get("Camera #1"), map.get("Camera #2"), map.get("Camera #3"), map.get("Camera #4"));
+                    try {
+                        inputText = cameraIP.getText();
+                        Configuration.modifyConfig(inputText, number);
+                        CameraPlayer.getGui().modifyRoot(number);
+                        secondaryWindow.close();
+                    } catch (IOException | ParseException ex) {
+                        Logger.getLogger(SmartButton.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             secondaryWindow.show();
         });
     }
-    
+
     public Button getButton() {
         return button;
-    }
-    
-    public Stage getStage() {
-        return stage;
-    }
-
-    public static int getNumber() {
-        return number;
-    }
-
-    public static String getInputText() {
-        return inputText;
     }
 }

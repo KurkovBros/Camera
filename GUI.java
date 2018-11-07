@@ -2,34 +2,41 @@
 
 package Camera;
 
+import static Camera.CameraPlayer.config;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 public class GUI {
     
-    private final String camera1;
-    private final String camera2;
-    private final String camera3;
-    private final String camera4;
     private final Stage primaryWindow;
+    private final GridPane root = new GridPane();
+    private Viewer view1;
+    private Viewer view2;
+    private Viewer view3;
+    private Viewer view4;
 
-    public GUI(String camera1, String camera2, String camera3, String camera4) {
-        this.camera1 = camera1;
-        this.camera2 = camera2;
-        this.camera3 = camera3;
-        this.camera4 = camera4;
-        primaryWindow = new Stage();
+    public GUI() throws IOException, FileNotFoundException, ParseException {
+        Map<String, String> mapStr = Configuration.readConfig(config);
+        String camera1 = mapStr.get("Camera #1");
+        String camera2 = mapStr.get("Camera #2");
+        String camera3 = mapStr.get("Camera #3");
+        String camera4 = mapStr.get("Camera #4");
+        primaryWindow = new Stage(); // Создание главного окна программы
         primaryWindow.setTitle("Camera Player"); // Установка заголовока окна
         primaryWindow.setResizable(false); // Запрет изменения размера окна
         
         // Создание четырех объектов класса Viewer для отображения видеопотоков с четырех камер
-        Viewer view1 = new Viewer(camera1);
-        Viewer view2 = new Viewer(camera2);
-        Viewer view3 = new Viewer(camera3);
-        Viewer view4 = new Viewer(camera4);
+        view1 = new Viewer(camera1);
+        view2 = new Viewer(camera2);
+        view3 = new Viewer(camera3);
+        view4 = new Viewer(camera4);
         
         // Создание четырех умных кнопок
         SmartButton button1 = new SmartButton(primaryWindow, 1);
@@ -38,7 +45,6 @@ public class GUI {
         SmartButton button4 = new SmartButton(primaryWindow, 4);
 
         // Создание и заполнение контейнера элементами
-        GridPane root = new GridPane();
         root.setPadding(new Insets(10));
         root.setHgap(10);
         root.setVgap(10);
@@ -50,29 +56,29 @@ public class GUI {
         root.add(view4.getGroup(), 1, 2);
         root.add(button3.getButton(), 0, 3);
         root.add(button4.getButton(), 1, 3);
-
+        
         Scene scene = new Scene(root, 1300, 810, Color.BLACK); // Создание сцены и добавление в нее контейнера
         primaryWindow.setScene(scene); // Установка сцены в окно программы
         primaryWindow.show(); // Отображение окна программы
     }
 
-    public String getCamera1() {
-        return camera1;
-    }
-
-    public String getCamera2() {
-        return camera2;
-    }
-
-    public String getCamera3() {
-        return camera3;
-    }
-
-    public String getCamera4() {
-        return camera4;
-    }
-
-    public Stage getPrimaryWindow() {
-        return primaryWindow;
+    public void modifyRoot(int number) throws IOException, FileNotFoundException, ParseException {
+        if (number == 1) {
+            root.getChildren().remove(view1.getGroup());
+            view1 = new Viewer(Configuration.readConfig(config).get("Camera #1"));
+            root.add(view1.getGroup(), 0, 0);
+        } else if (number == 2) {
+            root.getChildren().remove(view2.getGroup());
+            view2 = new Viewer(Configuration.readConfig(config).get("Camera #2"));
+            root.add(view2.getGroup(), 1, 0);
+        } else if (number == 3) {
+            root.getChildren().remove(view3.getGroup());
+            view3 = new Viewer(Configuration.readConfig(config).get("Camera #3"));
+            root.add(view3.getGroup(), 0, 2);
+        } else if (number == 4) {
+            root.getChildren().remove(view4.getGroup());
+            view4 = new Viewer(Configuration.readConfig(config).get("Camera #4"));
+            root.add(view4.getGroup(), 1, 2);
+        }
     }
 }

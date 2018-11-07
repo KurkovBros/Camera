@@ -28,7 +28,7 @@ public class CameraPlayer extends Application {
         } else {
             map = Configuration.createConfig(config);
         }
-        gui = new GUI(map.get("Camera #1"), map.get("Camera #2"), map.get("Camera #3"), map.get("Camera #4"));
+        gui = new GUI();
     }
     
     public static String getConfig() {

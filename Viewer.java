@@ -26,10 +26,6 @@ public class Viewer {
         player.play();
     }
     
-    public String getDirectory() {
-        return directory;
-    }
-    
     public Group getGroup() {
         return group;
     }
