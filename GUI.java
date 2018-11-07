@@ -23,11 +23,11 @@ public class GUI {
     private Viewer view4;
 
     public GUI() throws IOException, FileNotFoundException, ParseException {
-        Map<String, String> mapStr = Configuration.readConfig(config);
-        String camera1 = mapStr.get("Camera #1");
-        String camera2 = mapStr.get("Camera #2");
-        String camera3 = mapStr.get("Camera #3");
-        String camera4 = mapStr.get("Camera #4");
+        Map<Integer, String> mapStr = Configuration.readConfig(config);
+        String camera1 = mapStr.get(1);
+        String camera2 = mapStr.get(2);
+        String camera3 = mapStr.get(3);
+        String camera4 = mapStr.get(4);
         primaryWindow = new Stage(); // Создание главного окна программы
         primaryWindow.setTitle("Camera Player"); // Установка заголовока окна
         primaryWindow.setResizable(false); // Запрет изменения размера окна
@@ -65,19 +65,19 @@ public class GUI {
     public void modifyRoot(int number) throws IOException, FileNotFoundException, ParseException {
         if (number == 1) {
             root.getChildren().remove(view1.getGroup());
-            view1 = new Viewer(Configuration.readConfig(config).get("Camera #1"));
+            view1 = new Viewer(Configuration.readConfig(config).get(1));
             root.add(view1.getGroup(), 0, 0);
         } else if (number == 2) {
             root.getChildren().remove(view2.getGroup());
-            view2 = new Viewer(Configuration.readConfig(config).get("Camera #2"));
+            view2 = new Viewer(Configuration.readConfig(config).get(2));
             root.add(view2.getGroup(), 1, 0);
         } else if (number == 3) {
             root.getChildren().remove(view3.getGroup());
-            view3 = new Viewer(Configuration.readConfig(config).get("Camera #3"));
+            view3 = new Viewer(Configuration.readConfig(config).get(3));
             root.add(view3.getGroup(), 0, 2);
         } else if (number == 4) {
             root.getChildren().remove(view4.getGroup());
-            view4 = new Viewer(Configuration.readConfig(config).get("Camera #4"));
+            view4 = new Viewer(Configuration.readConfig(config).get(4));
             root.add(view4.getGroup(), 1, 2);
         }
     }

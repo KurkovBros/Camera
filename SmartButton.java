@@ -69,18 +69,18 @@ public class SmartButton {
             });
             
             // Создание и размещение кнопки Cansel
-            Button canselButton = new Button("Cansel");
-            canselButton.setLayoutX(180);
-            canselButton.setLayoutY(60);
-            canselButton.setMinSize(100, 20);
-            canselButton.setOnAction((ActionEvent event1) -> {
+            Button cancelButton = new Button("Cancel");
+            cancelButton.setLayoutX(180);
+            cancelButton.setLayoutY(60);
+            cancelButton.setMinSize(100, 20);
+            cancelButton.setOnAction((ActionEvent event1) -> {
                 secondaryWindow.close();
             });
             
             // Создание и заполнение контейнера
             Pane pane = new Pane();
             pane.setPadding(new Insets(10));
-            pane.getChildren().addAll(label, cameraIP, okButton, canselButton);
+            pane.getChildren().addAll(label, cameraIP, okButton, cancelButton);
             
             Scene secondaryScene = new Scene(pane, 290, 100, Color.BLACK); // Создание сцену и добавляем в нее контейнер
             secondaryWindow.setScene(secondaryScene); // Устанавливаем сцену в окно программы

@@ -19,28 +19,28 @@ import org.json.simple.parser.ParseException;
 public class Configuration {
     
     // Создание JSON файла настроек
-    public static Map<String, String> createConfig(String config) {
+    public static Map<Integer, String> createConfig(String config) {
         String camera1 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Baby.mp4";
         String camera2 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Crying.mp4";
         String camera3 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Slim.mp4";
         String camera4 = "file:///C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Movies/Alergia.mp4";
-        Map<String, String> map = new HashMap<>();
+        Map<Integer, String> map = new HashMap<>();
         JSONArray jArray = new JSONArray();
         JSONObject jObject = new JSONObject();
-        jObject.put("Camera #1", camera1);
-        map.put("Camera #1", camera1);
+        jObject.put(1, camera1);
+        map.put(1, camera1);
         jArray.add(jObject);
         jObject = new JSONObject();
-        jObject.put("Camera #2", camera2);
-        map.put("Camera #2", camera2);
+        jObject.put(2, camera2);
+        map.put(2, camera2);
         jArray.add(jObject);
         jObject = new JSONObject();
-        jObject.put("Camera #3", camera3);
-        map.put("Camera #3", camera3);
+        jObject.put(3, camera3);
+        map.put(3, camera3);
         jArray.add(jObject);
         jObject = new JSONObject();
-        jObject.put("Camera #4", camera4);
-        map.put("Camera #4", camera4);
+        jObject.put(4, camera4);
+        map.put(4, camera4);
         jArray.add(jObject);
 
         // Создание JSON файла
@@ -56,18 +56,18 @@ public class Configuration {
     }
     
     // Чтение JSON файла настроек
-    public static Map<String, String> readConfig(String config) throws FileNotFoundException, IOException, ParseException {
+    public static Map<Integer, String> readConfig(String config) throws FileNotFoundException, IOException, ParseException {
         JSONParser parser = new JSONParser();
         JSONArray array = (JSONArray) parser.parse(new FileReader(config));
         JSONObject jCamera1 = (JSONObject) array.get(0);
         JSONObject jCamera2 = (JSONObject) array.get(1);
         JSONObject jCamera3 = (JSONObject) array.get(2);
         JSONObject jCamera4 = (JSONObject) array.get(3);
-        Map<String, String> map = new HashMap<>();
-        map.put("Camera #1", (String) jCamera1.get("Camera #1"));
-        map.put("Camera #2", (String) jCamera2.get("Camera #2"));
-        map.put("Camera #3", (String) jCamera3.get("Camera #3"));
-        map.put("Camera #4", (String) jCamera4.get("Camera #4"));
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, (String) jCamera1.get("1"));
+        map.put(2, (String) jCamera2.get("2"));
+        map.put(3, (String) jCamera3.get("3"));
+        map.put(4, (String) jCamera4.get("4"));
         return map;
     }
     
@@ -79,7 +79,7 @@ public class Configuration {
                 JSONParser parser = new JSONParser();
                 JSONArray jArray = (JSONArray) parser.parse(new FileReader(config));
                 JSONObject jObject = new JSONObject();
-                jObject.put("Camera #" + number, "file:///" + inputText);
+                jObject.put(number, "file:///" + inputText);
                 jArray.set(number - 1, jObject);
                 File oldFile = new File(config);
                 oldFile.delete();

@@ -14,7 +14,7 @@ public class CameraPlayer extends Application {
     
     public static String config = "C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/config.json";
     private static GUI gui;
-    private static Map<String, String> map = new HashMap<>();
+    private static Map<Integer, String> map = new HashMap<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -39,7 +39,7 @@ public class CameraPlayer extends Application {
         return gui;
     }
 
-    public static Map<String, String> getMap() {
+    public static Map<Integer, String> getMap() {
         return map;
     }
 }
