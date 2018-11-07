@@ -11,8 +11,8 @@ public interface Camera {
     // Maximum camera number
     int CAM_NUM_MAX = 9999;
 
-    // Set the camera number in viewport
-    void setCamNum(Integer cn, Integer vp);
+    // Set the camera number
+    void setCamNum(Integer cn);
 
     // Get the camera number
     Integer getCamNum();
