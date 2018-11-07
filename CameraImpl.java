@@ -2,7 +2,6 @@
 
 package Camera;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class CameraImpl implements Camera {
     }
 
     @Override
-    public Image getScreenshot() {
+    public WritableImage getScreenshot() {
         SnapshotParameters ssp = new SnapshotParameters();
         WritableImage image = group.snapshot(ssp, null);
         File folder = new File("C:/Users/Александр/Documents/NetBeansProjects/Project_003/src/Camera/Screenshots");
@@ -56,7 +55,7 @@ public class CameraImpl implements Camera {
             } catch (IOException e) {
             }
         }
-        return null;
+        return image;
     }
 
     @Override

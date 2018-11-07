@@ -1,7 +1,7 @@
 // Оконный интерфейс видеоплеера
 package Camera;
 
-import java.awt.Image;
+import javafx.scene.image.WritableImage;
 
 public interface Camera {
 
@@ -27,7 +27,7 @@ public interface Camera {
     int getFps();
 
     // Get the screenshot
-    Image getScreenshot();
+    WritableImage getScreenshot();
 
     // Make the screenshot and save it to the specified path
     void makeScreenshot(String path);
